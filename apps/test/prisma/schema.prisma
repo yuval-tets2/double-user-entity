@@ -1,0 +1,34 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt   DateTime @default(now())
+  id          String   @id @default(cuid())
+  otherField  String?
+  otherField2 String?
+  password    String?
+  roles       Role[]
+  updatedAt   DateTime @updatedAt
+  username    String?
+}
+
+model OtherTableFromImport {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
